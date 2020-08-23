@@ -167,7 +167,7 @@ modify  any of the used packages). The meaning of "pirating a type" becomes
 a   little  bit  wider  in  this  context,  as  you  saw  with  the  method
 `invariants(y)`  in `BenchmarkTools`: it is, I would say, polite, if any of
 your  methods which has  a possibly conflicting  name uses at  least one of
-your own types.
+your own types in its signature.
 
 There  are two  technical problems  left (that  I know  of --  there may be
 others I am not aware):
