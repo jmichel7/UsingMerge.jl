@@ -116,7 +116,7 @@ and merges them as above, and uses the non-conflicting ones.
 
 You will find `using_merge.jl` in the `src` directory at
 
-https://github.com/jmichel7/Gapjm.jl
+https://github.com/jmichel7/using_merge.jl
 
 This is just a function (not a module or a package) because:
 
