@@ -1,9 +1,9 @@
 # using_merge.jl
 The wish for this started in
 [this thread](https://discourse.julialang.org/t/function-name-conflict-adl-function-merging/10335/7).
-at  the time I was very new to Julia  and did not think I could do anything
+At  the time I was very new to Julia  and did not think I could do anything
 myself  about the  problem. Now  two years  later, knowing  better Julia, I
-realized I can do something myself. Here it is.
+realized I can do something. Here it is.
 
 I introduce the problem with an example.
 
@@ -102,30 +102,34 @@ invariants(f, group::BenchmarkGroup) = BenchmarkTools.invariants(f, group)
 invariants(f, x) = BenchmarkTools.invariants(f, x)
 ```
 I  call  the  end  result  of  the  above  process  `merging`  the  package
-`BenchmarkTools`  with my  current package.  What I  announce is a function
-`using_merge` which does all the above automatically. If you call
+`BenchmarkTools`  with  my  current  package.  What  I  announce  here is a
+function  `using_merge`  which  does  all  the  above automatically. If you
+`include`  the text  of the  function which  is in `using_merge.jl`and then
+call
 
 ```
 julia> using_merge(:BenchmarkTools)
 ```
 
 The function determines conflicting method and macro names in the package
-and merges them as above, and imports the non-conflicting ones.
+and merges them as above, and uses the non-conflicting ones.
 
-You will find the source code for this function in the `src` directory at
+You will find `using_merge.jl` in the `src` directory at
 
 https://github.com/jmichel7/Gapjm.jl
 
 This is just a function (not a module or a package) because:
 
 - a simple function can do the job, and the function uses `eval` which needs
-  to eval in the current module, so I find it easier to just `include` the
+  to  eval in the current module, so I find it easier to just `include` the
   function rather than to find how to `eval` in the calling module.
 
 - I wait  for feedback  (which I  hope will  come) before  thinking how to
-package the thing in a Julia package (or not), and whether I should provide
-a macro rather than a function. Also my implementation is perhaps not the
-best, I kind of parse the output of `methods`.
+  package  the thing  in a  Julia package  (or not),  and whether  I should
+  provide a macro rather than a function. Also my implementation is perhaps
+  not the best, I kind of parse the output of `methods`.
+
+- I have not yet solved all technical problems, see below.
 
 The function has two optional keyword arguments:
 
@@ -138,7 +142,7 @@ will reexport all non-conflicting names.
 julia> using_merge(:BenchmarkTools;debug=1)
 ```
 
-will print all executed statements, and `debug=2` will describe even more
+will  print all `eval`ed statements, and  `debug=2` will describe even more
 verbosely the taken actions.
 
 Since  I wrote this function,  I found that I  got the hoped for modularity
