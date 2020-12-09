@@ -101,6 +101,15 @@ invariants(x) = BenchmarkTools.invariants(x)
 invariants(f, group::BenchmarkGroup) = BenchmarkTools.invariants(f, group)
 invariants(f, x) = BenchmarkTools.invariants(f, x)
 ```
+
+The  last thing to do is  make the docstring of `BenchmarkTools.invariants`
+accessible  to the help  of my routine  `invariants`. It happens  it has no
+docstring, but if it had one I must do:
+
+```
+@doc (@doc BenchmarkTools.invariants) invariants
+```
+
 I  call  the  end  result  of  the  above  process  `merging`  the  package
 `BenchmarkTools`  with  my  current  package.  What  I  announce  here is a
 function  `using_merge`  which  does  all  the  above automatically. If you
@@ -169,11 +178,11 @@ a   little  bit  wider  in  this  context,  as  you  saw  with  the  method
 your  methods which has  a possibly conflicting  name uses at  least one of
 your own types in its signature.
 
-There  are two  technical problems  left (that  I know  of --  there may be
+There  is one  technical problems  left (that  I know  of --  there may be
 others I am not aware):
 
--  I do not know how to  implement the above scheme for conflicting macros.
-For example, you can see that the signature of `@btime` is:
+I do not know how to implement the above scheme for conflicting macros. For
+example, you can see that the signature of `@btime` is:
 
 ```
 julia> methods(eval(Symbol("@btime")))
@@ -184,14 +193,3 @@ julia> methods(eval(Symbol("@btime")))
 
 I do not know how to write a `macro btime` which forwards this declaration
 to the current module.
-
-- I do not know how to forward docstrings. With the declaration
-
-```
-invariants(x) = BenchmarkTools.invariants(x)
-```
-a  docstring  of  `BenchmarkTools.invariants`  is  not  attached to the new
-definition,  so `?invariants` will  not show the  docstrings. You can still
-see  them by `?BenchmarkTools.invariants` but they were not merged together
-with  the definitions, which partially defeats my goal. If someone tells me
-how I could fix the above problems, I would be grateful.
