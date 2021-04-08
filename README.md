@@ -1,4 +1,8 @@
-# using_merge.jl
+# UsingMerge.jl
+
+This  package exports  a single  function `using_merge`  which differs from
+`using` in that it "merges" the exported definitions automatically.
+
 The wish for this started in
 [this thread](https://discourse.julialang.org/t/function-name-conflict-adl-function-merging/10335/7).
 At  the time I was very new to Julia  and did not think I could do anything
@@ -26,9 +30,9 @@ Stacktrace:
  [5] top-level scope at none:0
 ```
 
-This is annoying! I do not want to have to qualify every call to `invariants`
-just because I am timing my code! What can I do? Well, first I could just
-import the methods I am using in `BenchmarkTools`:
+This  is  annoying!  I  do  not  want  to  have  to  qualify  every call to
+`invariants` just because I am timing my code! What can I do? Well, first I
+could just import the methods I am using in `BenchmarkTools`:
 
 ```
 julia> using BenchmarkTools: @btime
@@ -190,6 +194,5 @@ julia> methods(eval(Symbol("@btime")))
 [1] @btime(__source__::LineNumberNode, __module__::Module, args...)
 ...
 ```
-
 I do not know how to write a `macro btime` which forwards this declaration
 to the current module.
