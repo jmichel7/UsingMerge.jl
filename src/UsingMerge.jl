@@ -1,5 +1,5 @@
-module UsingMerge
-export using_merge
+#module UsingMerge
+#export using_merge
 
 """
 `using_merge(mod::Symbol;reexport=false,debug=0)`
@@ -103,4 +103,4 @@ function using_merge(mod::Symbol;reexport=false,debug=0)
     end
   end
 end
-end
+#end
