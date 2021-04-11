@@ -116,47 +116,33 @@ docstring, but if it had one I must do:
 
 I  call  the  end  result  of  the  above  process  `merging`  the  package
 `BenchmarkTools`  with  my  current  package.  What  I  announce  here is a
-function  `using_merge`  which  does  all  the  above automatically. If you
-`include`  the text  of the  function which  is in `using_merge.jl`and then
-call
+macro  `@usingmerge`  which  does  all  the  above automatically. If you do
 
 ```
-julia> using_merge(:BenchmarkTools)
+julia> using UsingMerge
+julia> @usingmerge BenchmarkTools
 ```
 
 The function determines conflicting method and macro names in the package
 and merges them as above, and uses the non-conflicting ones.
 
-You will find `using_merge.jl` in the `src` directory at
+You will find `UsingMerge` at
 
-https://github.com/jmichel7/using_merge.jl
+https://github.com/jmichel7/UsingMerge.jl
 
-This is just a function (not a module or a package) because:
-
-- a simple function can do the job, and the function uses `eval` which needs
-  to  eval in the current module, so I find it easier to just `include` the
-  function rather than to find how to `eval` in the calling module.
-
-- I wait  for feedback  (which I  hope will  come) before  thinking how to
-  package  the thing  in a  Julia package  (or not),  and whether  I should
-  provide a macro rather than a function. Also my implementation is perhaps
-  not the best, I kind of parse the output of `methods`.
-
-- I have not yet solved all technical problems, see below.
-
-The function has two optional keyword arguments:
+The macro can take two possible optional arguments
 
 ```
-julia> using_merge(:BenchmarkTools;reexport=true)
+julia> @usingmerge reexport BenchmarkTools
 ```
 will reexport all non-conflicting names.
 
 ```
-julia> using_merge(:BenchmarkTools;debug=1)
+julia> @usingmerge verbose=true BenchmarkTools
 ```
 
-will  print all `eval`ed statements, and  `debug=2` will describe even more
-verbosely the taken actions.
+will  print all conflicts resolved, and `verbose=2` will describe print all
+executed actions.
 
 Since  I wrote this function,  I found that I  got the hoped for modularity
 benefits in my code. For example, I have in my `Gapjm.jl` package modules
@@ -182,8 +168,9 @@ a   little  bit  wider  in  this  context,  as  you  saw  with  the  method
 your  methods which has  a possibly conflicting  name uses at  least one of
 your own types in its signature.
 
-There  is one  technical problems  left (that  I know  of --  there may be
-others I am not aware):
+I  hope to get feedback. My implementation  is perhaps not the best, I kind
+of parse the output of `methods`. There is one technical problem left (that
+I know of -- there may be others I am not aware):
 
 I do not know how to implement the above scheme for conflicting macros. For
 example, you can see that the signature of `@btime` is:
