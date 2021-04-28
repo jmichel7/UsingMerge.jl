@@ -1,6 +1,6 @@
 # UsingMerge.jl
 
-This  package exports  a single  function `using_merge`  which differs from
+This  package exports  a single  macro `@usingmerge`  which differs from
 `using` in that it "merges" the exported definitions automatically.
 
 The wish for this started in
@@ -168,18 +168,15 @@ a   little  bit  wider  in  this  context,  as  you  saw  with  the  method
 your  methods which has  a possibly conflicting  name uses at  least one of
 your own types in its signature.
 
-I  hope to get feedback. My implementation  is perhaps not the best, I kind
-of parse the output of `methods`. There is one technical problem left (that
-I know of -- there may be others I am not aware):
-
-I do not know how to implement the above scheme for conflicting macros. For
-example, you can see that the signature of `@btime` is:
+The  program only merges methods  of functions. If a  conflicting name is a
+`macro`,  a `struct` or  a type, a  message is printed  and the name is not
+merged.  It is also possible,  like for `using` to  specify a list of names
+and merge only those names:
 
 ```
-julia> methods(eval(Symbol("@btime")))
-# 1 method for macro "@btime":
-[1] @btime(__source__::LineNumberNode, __module__::Module, args...)
-...
+@usingmerge BenchmarkTools: invariants
 ```
-I do not know how to write a `macro btime` which forwards this declaration
-to the current module.
+
+I  hope to get  feedback. My implementation  is perhaps not  the best, as I
+kind  of parse the output of  `methods`. Using structural information would
+be better but I do not know what's possible.
