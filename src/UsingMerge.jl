@@ -14,13 +14,13 @@ current  module. If a  name is not  new it is  assumed that the decision to
 export it or not has been taken before.
 
 If `verbose=true` conflicting methods are printed.
-if `verbose=2` every executed command is printed before execution.
+If `verbose=2` every executed command is printed before execution.
 If `verbose=3` boths happens.
 
 If  a name exported  by `SomeModule` conflicts  with a name  which is not a
-method a warning is pfrinted and the name is not merged (not imported).
+method a warning is printed and the name is not merged (not imported).
 
-Now an example of use:
+An example of use:
 ```julia
 julia> using UsingMerge
 
@@ -39,8 +39,8 @@ Main.foo(x::Float64) = Bar.foo(x)
 ```
 
 One  could have done `@usingmerge Bar:  foo` to import/merge `foo` only. In
-any  case, note that the euqivalent of `using  Bar: Bar` is done to put the
-name in scope.
+any  case, note that the equivalent of `using  Bar: Bar` is done in any case
+to put the name `Bar` in scope.
 """
 macro usingmerge(e...)
   verbose=0
