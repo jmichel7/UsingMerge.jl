@@ -135,12 +135,6 @@ package
 julia> @usingmerge BenchmarkTools: invariants, ratio
 ```
 
-Since `UsingMerge` is not yet registered you install it in `pkg` mode by
-
-```
-pkg> add https://github.com/jmichel7/UsingMerge.jl
-```
-
 The macro `@usingmerge` has two optional arguments
 
 ```
@@ -175,7 +169,7 @@ now  just `using_merge` each  of them instead  of writing (unpleasant) glue
 code.
 
 I  do not advocate always  replacing the semantics of  `using` with that of
-`using_merge`,  but  I  feel  that  `using_merge`  is a nice tool for using
+`@usingmerge`,  but  I  feel  that  `@usingmerge`  is a nice tool for using
 packages  together without having to write glue code (and without having to
 modify  any of the used packages). The meaning of "pirating a type" becomes
 a   little  bit  wider  in  this  context,  as  you  saw  with  the  method
