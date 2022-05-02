@@ -103,14 +103,16 @@ function using_merge(mod::Symbol,modnames=nothing;reexport=false,verbose=0)
     end
     methofname=methods(eval(name))
     modofname=nameof(parentmodule(eval(name)))
-    if !iszero(verbose&1) 
-      print("# $mod.$name conflicts with $modofname.$name --- adding methods")
-    end
     s=split(repr(methods(eval(:($mod.$name)))),"\n")
+    nb=length(s)-1
+    plural=nb>1 ? "s" : ""
+    if !iszero(verbose&1) 
+      print("# $mod.$name adding $nb method$plural to $modofname.$name")
+    end
     for (j,l) in enumerate(s[2:end])
       if j==1 
         if !isempty(eval(:(@doc $mod.$name)).meta[:results])
-          if !iszero(verbose&1) println(" and docs") end
+          if !iszero(verbose&1) println(" and doc") end
           myeval(:(@doc (@doc $mod.$name) $modofname.$name))
         else println() 
         end

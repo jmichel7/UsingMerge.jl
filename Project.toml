@@ -1,7 +1,7 @@
 name = "UsingMerge"
 uuid = "b01ca8d2-7fff-4612-bd8c-d9d20281f780"
 authors = ["Jean Michel <jean.michel@imj-prg.fr>"]
-version = "0.0.3"
+version = "0.0.4"
 
 [compat]
 julia = "1"
