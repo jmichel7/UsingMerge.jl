@@ -107,7 +107,7 @@ function using_merge(mod::Symbol,modnames=nothing;reexport=false,verbose=0)
     nb=length(s)-1
     plural=nb>1 ? "s" : ""
     if !iszero(verbose&1) 
-      print("# $mod.$name adding $nb method$plural to $modofname.$name")
+      print("# $mod adds $nb method$plural to $modofname.$name")
     end
     for (j,l) in enumerate(s[2:end])
       if j==1 
