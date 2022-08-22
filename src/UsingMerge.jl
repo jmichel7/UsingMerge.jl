@@ -73,7 +73,6 @@ function using_merge(mod::Symbol,modnames=nothing;reexport=false,verbose=0)
   function myeval(e)
     if !iszero(verbose&2) 
       println(remove_linenums(e))
-      println(e)
     end
     eval(e)
   end
