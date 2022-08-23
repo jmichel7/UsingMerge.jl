@@ -103,12 +103,13 @@ function using_merge(mod::Symbol,modnames=nothing;reexport=false,verbose=0)
     methofname=methods(eval(name))
     modofname=nameof(parentmodule(eval(name)))
     s=split(repr(methods(eval(:($mod.$name)))),"\n")
-    nb=length(s)-1
+    if VERSION>v"1.8.5" s=s[2:2:end] else s=s[2:end] end
+    nb=length(s)
     plural=nb>1 ? "s" : ""
     if !iszero(verbose&1) 
       print("# $mod adds $nb method$plural to $modofname.$name")
     end
-    for (j,l) in enumerate(s[2:end])
+    for (j,l) in enumerate(s)
       if j==1 
         if !isempty(eval(:(@doc $mod.$name)).meta[:results])
           if !iszero(verbose&1) println(" and doc") end
@@ -116,9 +117,15 @@ function using_merge(mod::Symbol,modnames=nothing;reexport=false,verbose=0)
         else println() 
         end
       end
-      if !iszero(verbose&4) println("   l=",l) end
-      l1=replace(l,r"^\[[0-9]*\] (.*) in .*( at .*)?"=>s"\1")
-      l1=replace(l1,r"#(s[0-9]*)"=>s"\1")
+      if !iszero(verbose&4) 
+        @show l
+      end
+      if VERSION>v"1.8.5" 
+        l1=replace(l,r"^\s*\[[0-9]*\]\s*"=>"")
+      else
+        l1=replace(l,r"^\[[0-9]*\] (.*) in .*( at .*)?"=>s"\1")
+        l1=replace(l1,r"#(s[0-9]*)"=>s"\1")
+      end
       e1=Meta.parse(l1)
       if !iszero(verbose&4) println("\n   =>",e1) end
       e2=e1.head==:where ? e1.args[1] : e1
