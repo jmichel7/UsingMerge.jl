@@ -112,7 +112,7 @@ function using_merge(mod::Symbol,modnames=nothing;reexport=false,verbose=0)
     for (j,l) in enumerate(s)
       if j==1 
         doc=eval(:(@doc $mod.$name))
-        if !isnothing(doc) && !isempty(doc.meta[:results])
+        if !isnothing(doc) && typeof(doc)!=Base.Docs.DocStr && !isempty(doc.meta[:results])
           if !iszero(verbose&1) println(" and doc") end
           myeval(:(@doc (@doc $mod.$name) $modofname.$name))
         else println() 
